@@ -1,20 +1,19 @@
-import { View, Text , StyleSheet} from 'react-native'
+import { View } from 'react-native'
 import React from 'react'
+import Form from '../components/Form';
+import Title from '../components/Title';
+import tw from 'tailwind-react-native-classnames';
+import Layout from './Layout';
+
 
 export default function Home() {
   return (
-    <View style={styles.container}>
-      <Text>Its Working</Text>
-      {/*<StatusBar style="auto" />*/}
-    </View>
+    <Layout>
+        <View style = {tw`w-3/4`}>
+        <Title text="Login" /> 
+        <Form/>
+        </View>
+    </Layout>
   )
 }
 
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: 'white',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-  });
