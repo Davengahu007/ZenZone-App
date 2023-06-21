@@ -7,13 +7,16 @@ import Layout from './Layout';
 
 
 export default function Home() {
+  const login = (email,password) =>{
+    alert(email)
+    // console.log(email)
+  }
   return (
     <Layout>
         <View style = {tw`w-3/4`}>
         <Title text="Login" /> 
-        <Form/>
+        <Form signup = {false} onSubmit={login} />
         </View>
     </Layout>
-  )
+  );
 }
-

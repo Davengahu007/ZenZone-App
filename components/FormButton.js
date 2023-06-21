@@ -16,7 +16,8 @@ export default function FormButton(props) {
     primaryText = tw`text-center text-white font-bold`,
     secondaryText = tw`text-center text-blue-500 font-bold`
   return (
-    <TouchableOpacity style = {primary ? primaryStyling : secondaryStyling} {...other}>
+    <TouchableOpacity 
+     style = {primary ? primaryStyling : secondaryStyling} {...other}>
       <Text style={primary ? primaryText : secondaryText}>{text}</Text>
     </TouchableOpacity>
   )
