@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { View , Text} from 'react-native';
 import React, { useState } from 'react';
 import tw from 'tailwind-react-native-classnames';
 import FormLabel from './FormLabel';
@@ -29,7 +29,7 @@ export default function Form(props) {
   };
 
   const handleRegisterSubmit = () => {
-    // Submit function for Register form
+    props.onSubmit(email,password);
     console.log('Register form submitted');
   };
 
@@ -39,7 +39,7 @@ export default function Form(props) {
     } else {
       handleLoginSubmit(); // Call login submit function if in Login form
     }
-    // console.log("nice it")
+    
   };
 
   const handleSecondaryButtonPress = () => {
@@ -54,6 +54,11 @@ export default function Form(props) {
           onChangeText={(text) => setEmail(text)}
           value={email}
         />
+
+{props.errorEmail && (<Text style={tw`bg-red-400 p-1 my-2 text-red-700`}> {props.errorEmail}
+ </Text>
+ )}
+
       </FormInputGroup>
 
       <FormInputGroup>
@@ -63,15 +68,13 @@ export default function Form(props) {
           value={password}
           secureTextEntry={true}
         />
+
       </FormInputGroup>
+
 
       <FormButton
         primary={true}
         onPress={handlePrimaryButtonPress}
-        // onPress={() => {
-        //   // console.log("nice it")
-        //   handlePrimaryButtonPress()
-        // }}
         text={primaryButtonText}
       />
 
@@ -79,7 +82,16 @@ export default function Form(props) {
         primary={false}
         onPress={handleSecondaryButtonPress}
         text={screen === 'Register' ? 'Login' : 'Register'}
-      />
+        />
+
+        {!!props.errorPassword && (
+          <Text style = {tw`bg-red-400 p-1 my-2 text-red-700`}>
+            {props.errorPassword}
+          </Text>
+        )}
+
+
+      
     </View>
   );
 }
