@@ -7,6 +7,7 @@ import Layout from './Layout';
 import axios from 'axios';
 import {BASE_URL} from '@env';
 import {useState} from 'react'
+import * as Device from 'expo-device'
 
 
 export default function Register() {
@@ -15,22 +16,32 @@ export default function Register() {
     [successMessage, setSuccess] = useState("")
 
 
-
-   
-
    const register = (email,password) => {
     const credentials = {
         email:email,
-        password:password
+        password:password,
+        devicename:Device.modelName
     }
 
-    
+
       if(!email || !password){
       alert("Fill in all the required fields");
       }
       else{
-        axios.post(`${BASE_URL}/api/register`, credentials).then((response) =>{
-            console.log(response.data)
+        axios.post(`${'https://2088-105-160-50-65.ngrok-free.app'}/api/register`, credentials).then((response) =>{
+            if(response.data.status){
+                 setError({errorEmail: "",
+                errorPassword: ""})
+                setSuccess("Registration Successful")
+
+            }
+            else{
+            console.log(response.data.messages)
+            let errorEmailMsg = response.data.messages.email ? response.data.messages.email[0] : "",
+            errorPassMsg = response.data.messages.password ? response.data.messages.password[0] : ""
+            setError({errorEmail: errorEmailMsg,
+            errorPassword:errorPassMsg})
+            }
         }).catch((e) => console.log(e.message))
       }
 
