@@ -1,16 +1,17 @@
-import { View , Text} from 'react-native';
+import { View, Text } from 'react-native';
 import React, { useState } from 'react';
 import tw from 'tailwind-react-native-classnames';
 import FormLabel from './FormLabel';
 import FormInput from './FormInput';
 import FormButton from './FormButton';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import * as Animatable from 'react-native-animatable';
 
 const FormInputGroup = ({ children }) => {
   return (
-    <View style={tw`my-3`}>
+    <Animatable.View animation="fadeInUp" style={tw`my-3`}>
       {children}
-    </View>
+    </Animatable.View>
   );
 };
 
@@ -24,12 +25,12 @@ export default function Form(props) {
   const [password, setPassword] = useState('');
 
   const handleLoginSubmit = () => {
-    props.onSubmit(email,password);
+    props.onSubmit(email, password);
     console.log('Login form submitted');
   };
 
   const handleRegisterSubmit = () => {
-    props.onSubmit(email,password);
+    props.onSubmit(email, password);
     console.log('Register form submitted');
   };
 
@@ -39,7 +40,6 @@ export default function Form(props) {
     } else {
       handleLoginSubmit(); // Call login submit function if in Login form
     }
-    
   };
 
   const handleSecondaryButtonPress = () => {
@@ -50,15 +50,12 @@ export default function Form(props) {
     <View>
       <FormInputGroup>
         <FormLabel text="Email" />
-        <FormInput
-          onChangeText={(text) => setEmail(text)}
-          value={email}
-        />
-
-{props.errorEmail && (<Text style={tw`bg-red-400 p-1 my-2 text-red-700`}> {props.errorEmail}
- </Text>
- )}
-
+        <FormInput onChangeText={(text) => setEmail(text)} value={email} />
+        {!!props.errorEmail && (
+          <Text style={tw`p-1 my-2 text-red-700 rounded-lg`}>
+            {props.errorEmail}
+          </Text>
+        )}
       </FormInputGroup>
 
       <FormInputGroup>
@@ -68,9 +65,19 @@ export default function Form(props) {
           value={password}
           secureTextEntry={true}
         />
-
       </FormInputGroup>
 
+      {!!props.error && (
+        <Text style={tw`p-1 my-2 text-red-700 rounded-lg`}>
+          {props.error}
+        </Text>
+      )}
+
+      {screen === 'Login' && !!props.errorPassword && (
+        <Text style={tw`p-1 my-2 text-red-700 rounded-lg`}>
+          {props.errorPassword}
+        </Text>
+      )}
 
       <FormButton
         primary={true}
@@ -82,17 +89,14 @@ export default function Form(props) {
         primary={false}
         onPress={handleSecondaryButtonPress}
         text={screen === 'Register' ? 'Login' : 'Register'}
-        />
+      />
 
-        {!!props.errorPassword && (
-          <Text style = {tw`bg-red-400 p-1 my-2 text-red-700`}>
-            {props.errorPassword}
-          </Text>
-        )}
-
-
-      
+      <FormButton
+        text="Forgot Password?"
+        onPress={() => {
+          navigation.navigate('PasswordReset');
+        }}
+      />
     </View>
   );
 }
-
