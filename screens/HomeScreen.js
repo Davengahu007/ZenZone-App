@@ -1,11 +1,12 @@
-import { View, Text,ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Animated, Image } from 'react-native';
 import CalendarStrip from 'react-native-calendar-strip';
 import { useNavigation } from '@react-navigation/native';
 import DoubleTap from 'react-native-double-tap';
 import { useTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import logo from '../assets/ZenZoneLogo.png';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -14,6 +15,39 @@ export default function HomeScreen() {
   const { colors } = useTheme();
   const Stack = createStackNavigator();
 
+  const quotePosition = useRef(new Animated.Value(-1000)).current; 
+  const activityPosition = useRef(new Animated.Value(1000)).current; 
+  const blockPosition = useRef(new Animated.Value(-1000)).current;
+
+  useFocusEffect(
+    React.useCallback(() => {
+      quotePosition.setValue(-500);
+      activityPosition.setValue(500);
+      blockPosition.setValue(500);
+  
+      Animated.spring(quotePosition, {
+        toValue: 0, 
+        tension: 5, 
+        friction: 25.8, 
+        useNativeDriver: true,
+      }).start();
+  
+      Animated.spring(activityPosition, {
+        toValue: 0,
+        tension: 5, 
+        friction: 25.8,
+        useNativeDriver: true,
+      }).start();
+  
+      Animated.spring(blockPosition, {
+        toValue: 0, 
+        tension: 5, 
+        friction: 25.8, 
+        useNativeDriver: true,
+      }).start();
+    }, [])
+  );
+  
 
   const styles = StyleSheet.create({
   container: {
@@ -155,7 +189,7 @@ export default function HomeScreen() {
   return (
     <ScrollView>
     <View style={{ backgroundColor: '#7FB3D5', height: 70, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{fontWeight:'bold', marginTop:20,color: 'white', fontSize: 24 }}>ZenZone</Text>
+      <Image source={logo} style={{marginTop:50, width: 150, height: 150}} resizeMode="stretch" />
             </View>
       <CalendarStrip
         scrollable
@@ -183,13 +217,8 @@ export default function HomeScreen() {
        markedDate={[today]}
       />
       
-
-      <View style={styles.blockContainer}>
-
-
+      <Animated.View style={[styles.blockContainer, { transform: [{ translateY: blockPosition }] }]}>
         <Text style={styles.text}>Today I'm Feeling...</Text>
-        
-
         <View style={{ marginTop:20,flexDirection: 'row', justifyContent: 'space-around' }}>
           <TouchableOpacity onPress={() => navigation.navigate('Journals', { mood: 'Happy' })}>
             <Text style={{fontSize: 40}}><Text>😀</Text></Text>
@@ -219,40 +248,41 @@ export default function HomeScreen() {
         
       </View>
       
-      </View>
+      </Animated.View>
       <View style={{ flexDirection: 'row' }}>
   <TouchableOpacity 
     style={{ flex: 0.5 }} 
     onPress={() => navigation.navigate('Journals')}
   >
-    <View style={[styles.quoteContainer, styles.block]}>
+    <Animated.View style={[styles.quoteContainer, styles.block,{transform: [{ translateX: quotePosition }] }]}>
       <Text style={styles.blockTextTitle}>Daily Log</Text>
       <Text style={styles.blockTextContent}>Keep record of how you are feeling?</Text>
-    </View>
+    </Animated.View>
+
   </TouchableOpacity>
 
   <TouchableOpacity 
     style={{ flex: 0.5 }} 
     onPress={() => navigation.navigate('Assessment')}
   >
-    <View style={[styles.quoteContainer, styles.block]}>
+    <Animated.View style={[styles.quoteContainer, styles.block,{transform: [{ translateX: quotePosition }] }]}>
       <Text style={styles.blockTextTitle}>Check-in</Text>
       <Text style={styles.blockTextContent}>Check your mental health status.</Text>
-    </View>
+    </Animated.View>
   </TouchableOpacity>
 </View>
 
-      <View style={styles.todaysactivityContainer}>
+      <Animated.View style={[styles.todaysactivityContainer, { transform: [{ translateY: blockPosition }] }]}>
     <Text style={styles.todaysactivityText}>Today's Activity:</Text>
     <Text style={styles.todaysactivity}>I will tell someone I appreciate them for being in my life!</Text>
-  </View>
+  </Animated.View>
 
       <DoubleTap doubleTap={() => setLiked(!isLiked)}>
-        <View style={styles.quoteContainer}>
+      <Animated.View style={[styles.quoteContainer, styles.block,{transform: [{ translateX: quotePosition }] }]}>
           <Text style={styles.quoteText}>Quote of the Day</Text>
           <Text style={styles.quote}>“The best way to predict the future is to create it.” - Peter Drucker</Text>
           {isLiked && <Text style={styles.heartEmoji}>❤️</Text>}
-        </View>
+        </Animated.View>
       </DoubleTap>
       
     </ScrollView>

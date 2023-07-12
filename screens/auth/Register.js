@@ -9,6 +9,8 @@ import { BASE_URL } from '@env';
 import { useNavigation } from '@react-navigation/native';
 import * as Device from 'expo-device';
 import * as Animatable from 'react-native-animatable';
+import { Image } from 'react-native';
+import logo from '../../assets/ZenZoneLogo.png';
 
 export default function Register() {
   const [errorMessage, setError] = useState('');
@@ -50,9 +52,9 @@ export default function Register() {
 
   return (
     <Layout>
-      <View style={styles.container}>
+      
         <Animatable.View animation="fadeIn" style={tw`w-3/4`}>
-          <Title text="Register" />
+        <Image source={logo} style={{marginLeft:30, width: 250, height: 250}} resizeMode="stretch" />
           {!!successMessage && (
             <Modal visible={showPopup} animationType="fade" transparent={true}>
               <View style={styles.popupContainer}>
@@ -67,7 +69,7 @@ export default function Register() {
             errorPassword={errorMessage.errorPassword}
           />
         </Animatable.View>
-      </View>
+    
     </Layout>
   );
 }

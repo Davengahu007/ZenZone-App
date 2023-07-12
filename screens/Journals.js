@@ -1,24 +1,33 @@
-import { View, Text, StyleSheet, Alert, TextInput, TouchableOpacity, ScrollView } from 'react-native'; 
-import React, { useState } from 'react';
+import { View, Text, StyleSheet, Alert, TextInput, TouchableOpacity, ScrollView, Animated } from 'react-native'; 
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { format } from 'date-fns';
+import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Journals({route,navigation}) {
+const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
+const AnimatedView = Animated.createAnimatedComponent(View);
+
+export default function Journals({route, navigation}) {
   const initialMood = route.params?.mood || ''; 
   const [mood, setMood] = useState(initialMood);
   const [text, setText] = useState('');
-  
+
+  const titlePosition = useRef(new Animated.Value(300)).current;
+  const inputPosition = useRef(new Animated.Value(300)).current;
+
   const date = format(new Date(), 'MM/dd/yyyy');
 
   const saveJournalEntry = async () => {
-    // Replace with your Laravel backend API endpoint
-    const url = 'https://your-api-endpoint';
+    const email = await AsyncStorage.getItem('userEmail');
+    const url = 'https://8658-105-160-94-183.ngrok-free.app/api/journal';
 
     try {
       await axios.post(url, {
         mood,
-        journalEntry: text,
-        date: date 
+        story: text,
+        date: date,
+        email
       });
 
       setMood('');
@@ -26,19 +35,62 @@ export default function Journals({route,navigation}) {
 
       Alert.alert('Success', 'Your journal entry has been saved.');
     } catch (error) {
+      console.log('Error', error);
       Alert.alert('Error', 'Something went wrong while saving your journal entry.');
     }
   };
 
+  const confirmSaveJournalEntry = () => {
+    Alert.alert(
+      "Save Journal Entry?",
+      "",
+      [
+        {
+          text: "Continue Editing",
+          style: "cancel"
+        },
+        { text: "Save", onPress: saveJournalEntry }
+      ]
+    );
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('blur', () => {
+      titlePosition.setValue(1000);
+      inputPosition.setValue(-1000);
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      Animated.spring(titlePosition, {
+        toValue: 0, 
+        friction: 25.8, 
+        tension: 5, 
+        useNativeDriver: true
+      }).start();
+
+      Animated.spring(inputPosition, {
+        toValue: 0,
+        friction: 25.8, 
+        tension: 5, 
+        delay: 200,
+        useNativeDriver: true
+      }).start();
+    }, [])
+  );
+
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      <AnimatedView style={{...styles.header, transform: [{ translateX: titlePosition }]}}>
         <Text style={styles.title}>My Day</Text>
         <Text style={styles.date}>{date}</Text>
-      </View>
-      <ScrollView 
-        style={styles.scrollContainer}
-        showsVerticalScrollIndicator={true} // You can set this to true if you want the scrollbar to appear
+      </AnimatedView>
+      <AnimatedScrollView 
+        style={{...styles.scrollContainer, transform: [{ translateX: inputPosition }]}}
+        showsVerticalScrollIndicator={true} 
       >
         <TextInput
           style={styles.moodInput}
@@ -54,8 +106,12 @@ export default function Journals({route,navigation}) {
           onChangeText={setText}
           textAlignVertical='top'
         />
-      </ScrollView>
-      <TouchableOpacity style={styles.button} onPress={saveJournalEntry}>
+      </AnimatedScrollView>
+      <TouchableOpacity 
+        style={styles.button} 
+        onPress={confirmSaveJournalEntry}
+        disabled={!mood || !text}
+      >
         <Text style={styles.buttonText}>Save</Text>
       </TouchableOpacity>
     </View>
@@ -94,14 +150,15 @@ const styles = StyleSheet.create({
     marginBottom:20,
     marginTop: 20,
     backgroundColor: '#F2F3F4',
+    paddingTop: 20,  
   },
   moodInput: {
-    padding: 20,
+    padding: 10,
+    marginLeft:10,
     fontSize:20,
     fontWeight:'bold',
   },
   input: {
-    minHeight: '100%', 
     padding: 20,
   },
   button: {

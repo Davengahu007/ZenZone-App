@@ -1,10 +1,10 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Button, Alert} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Button, Alert, Animated} from 'react-native';
 import Slider from '@react-native-community/slider';
-import React, {useState, useRef} from 'react'
+import React, {useState, useRef,useCallback } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-
-
+import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function Assessment() {
 
@@ -34,6 +34,10 @@ export default function Assessment() {
   const [answers, setAnswers] = useState(Array(questions.length).fill(0));
   const refs = useRef(Array(questions.length).fill(React.createRef()));
 
+  const titlePosition = useRef(new Animated.Value(1000)).current; 
+  const beginAssessmentPosition = useRef(new Animated.Value(1000)).current; 
+  const questionsPosition = useRef(new Animated.Value(1000)).current; 
+
   const handleSubmit = async () => {
   
     if (answers.includes('')) {
@@ -41,16 +45,18 @@ export default function Assessment() {
       return;
     }
 
+    const email = await AsyncStorage.getItem('userEmail');
+
     const data = answers.reduce((result, answer, index) => {
       result['q' + (index + 1)] = answer;
       return result;
     }, {});
+
+    data['email'] = email;
     
     try {
-      const response = await axios.post(
-        'https://2d4b-105-161-227-23.ngrok-free.app/api/analysis',
-        { answers }
-      );
+      const response = await axios.post('https://8658-105-160-94-183.ngrok-free.app/api/analysis', data);
+
       console.log(response.data);
       Alert.alert('Success', 'Your answers have been submitted successfully.');
     } catch (error) {
@@ -70,69 +76,131 @@ export default function Assessment() {
     }
   };
 
+  useFocusEffect(
+    useCallback(() => {
+  
+      Animated.stagger(200, [ 
+        Animated.spring(titlePosition, {
+          toValue: 0,
+          friction: 25.8, 
+        tension: 5,
+          duration: 500, 
+          useNativeDriver: true, 
+        }),
+        Animated.spring(beginAssessmentPosition, {
+          toValue: 0, 
+          friction: 25.8, 
+        tension: 5,
+          duration: 500, 
+          useNativeDriver: true, 
+        }),
+        Animated.spring(questionsPosition, {
+          toValue: 0, 
+          friction: 25.8, 
+        tension: 5,
+          duration: 500, 
+          useNativeDriver: true, 
+        }),
+      ]).start();
+
+    return () => {
+      titlePosition.setValue(1000);
+      beginAssessmentPosition.setValue(-1000);
+      questionsPosition.setValue(1000);
+    };
+  }, [titlePosition, beginAssessmentPosition, questionsPosition])
+  );
+
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-
-    <View style= {{marginTop: 15,
-    backgroundColor: '#2980B9',
-    borderRadius: 20,
-    marginHorizontal:5,
-    padding: 10,
-    paddingTop:20,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 4, 
-    margin: 15, }}>
-
-
-      <Text style={styles.title}>Mental Health Check</Text>
-
-      <Text style={styles.instructions}>
-        Instructions:{'\n'}{'\n'}Please think back to how you have felt during the past 24 hours.{'\n'}{'\n'}
-        Using the 0-4 scale below, indicate the greatest amount that you have experienced each of the following feelings.
-      </Text>
-
-      <Text style={styles.scale}>
-      Not at all      =  0{'\n'}{'\n'}A little bit     =  1{'\n'}{'\n'}Moderately  =  2{'\n'}{'\n'}Quite a bit    =  3{'\n'}{'\n'}Extremely    =  4{'\n'}{'\n'}
-      </Text>
-</View>
-
-      <View style={styles.beginassessment}>
-      <Text style={styles.beginassessmenttitle}>Begin Assessment</Text>
-       <Text style={styles.beginassessmentinstructions}>Respond to all 20 questions before submitting</Text>
-      </View>
-       
-      {questions.map((question, index) => (
-  <View key={index} style={styles.inputContainer}>
-    <Text style={styles.question}>{question}</Text>
-    <View style={{marginLeft:50,flexDirection: 'row', justifyContent: 'space-between',width: 250}}>
-        <Text>0</Text>
-        <Text>1</Text>
-        <Text>2</Text>
-        <Text>3</Text>
-        <Text>4</Text>
-      </View>
-    <Slider
-      style={{width: 270, height: 40,marginLeft:40}}
-      minimumValue={0}
-      maximumValue={4}
-      step={1}
-      value={answers[index]}
-      onValueChange={(value) => handleInputChange(value, index)}
-    />
-  </View>
-))}
-<TouchableOpacity style={styles.button} onPress={handleSubmit}>
+      <Animated.View
+        style={{
+          transform: [{ translateX: titlePosition }],
+          marginTop: 15,
+          backgroundColor: '#2980B9',
+          borderRadius: 20,
+          marginHorizontal:5,
+          padding: 10,
+          paddingTop:20,
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.23,
+          shadowRadius: 2.62,
+          elevation: 4, 
+          margin: 15, 
+        }}
+      >
+        <Text style={styles.title}>Mental Health Check</Text>
+        <Text style={styles.instructions}>
+          Instructions:{'\n'}{'\n'}Please think back to how you have felt during the past 24 hours.{'\n'}{'\n'}
+          Using the 0-4 scale below, indicate the greatest amount that you have experienced each of the following feelings.
+        </Text>
+        <Text style={styles.scale}>
+        Not at all      =  0{'\n'}{'\n'}A little bit     =  1{'\n'}{'\n'}Moderately  =  2{'\n'}{'\n'}Quite a bit    =  3{'\n'}{'\n'}Extremely    =  4{'\n'}{'\n'}
+        </Text>
+      </Animated.View>
+  
+      <Animated.View
+        style={{
+          transform: [{ translateX: beginAssessmentPosition }],
+          textAlign: 'center',
+          marginBottom: 30,
+          backgroundColor: '#F2F3F4',
+          borderRadius: 20,
+          maxWidth:300,
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.23,
+          shadowRadius: 2.62,
+          elevation: 4, 
+          marginLeft: 35,
+          marginTop:15,
+        }}
+      >
+        <Text style={styles.beginassessmenttitle}>Begin Assessment</Text>
+        <Text style={styles.beginassessmentinstructions}>Respond to all 20 questions before submitting</Text>
+      </Animated.View>
+  
+      <Animated.View
+        style={{
+          transform: [{ translateX: questionsPosition }],
+        }}
+      >
+        {questions.map((question, index) => (
+          <View key={index} style={styles.inputContainer}>
+            <Text style={styles.question}>{question}</Text>
+            <View style={{marginLeft:50,flexDirection: 'row', justifyContent: 'space-between',width: 250}}>
+              <Text>0</Text>
+              <Text>1</Text>
+              <Text>2</Text>
+              <Text>3</Text>
+              <Text>4</Text>
+            </View>
+            <Slider
+              style={{width: 270, height: 40,marginLeft:40}}
+              minimumValue={0}
+              maximumValue={4}
+              step={1}
+              value={answers[index]}
+              onValueChange={(value) => handleInputChange(value, index)}
+            />
+          </View>
+        ))}
+      </Animated.View>
+  
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
     </ScrollView>
   );
+  
 }
 
 

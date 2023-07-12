@@ -47,6 +47,7 @@ export default function Form(props) {
   };
 
   return (
+    <View style={{ backgroundColor: '#7FB3D5' }}>
     <View>
       <FormInputGroup>
         <FormLabel text="Email" />
@@ -92,11 +93,13 @@ export default function Form(props) {
       />
 
       <FormButton
+      noBorder={true}
         text="Forgot Password?"
         onPress={() => {
           navigation.navigate('PasswordReset');
         }}
       />
+    </View>
     </View>
   );
 }
