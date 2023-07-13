@@ -20,7 +20,7 @@ export default function Journals({route, navigation}) {
 
   const saveJournalEntry = async () => {
     const email = await AsyncStorage.getItem('userEmail');
-    const url = 'https://8658-105-160-94-183.ngrok-free.app/api/journal';
+    const url = 'https://9915-2c0f-fe38-232b-a5ee-a9cc-4d46-457b-6639.ngrok-free.app/api/journal';
 
     try {
       await axios.post(url, {

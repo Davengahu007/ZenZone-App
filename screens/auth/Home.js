@@ -13,6 +13,7 @@ import { Image } from 'react-native';
 import logo from '../../assets/ZenZoneLogo.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
 export default function Home(props) {
   const [errorMessage, setError] = useState({ email: '', password: '' });
   const [successMessage, setSuccess] = useState('');
@@ -41,7 +42,7 @@ export default function Home(props) {
       alert('Please fill in all required fields');
     } else {
       axios
-        .post(`${'https://8658-105-160-94-183.ngrok-free.app'}/api/login`, credentials)
+        .post(`${'https://9915-2c0f-fe38-232b-a5ee-a9cc-4d46-457b-6639.ngrok-free.app'}/api/login`, credentials)
         .then(async (response) => {
           if (response.data.status) {
             await AsyncStorage.setItem('userToken', JSON.stringify(response.data));

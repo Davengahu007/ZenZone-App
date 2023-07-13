@@ -8,6 +8,7 @@ import UserDashboard from './screens/UserDashboard';
 import PasswordReset from './screens/auth/PasswordReset';
 import Journal from './screens/Journals'; 
 import HomeScreen from './screens/HomeScreen';
+import Analysis from './screens/analysis';  
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createNativeStackNavigator();
@@ -55,6 +56,7 @@ export default function App() {
         </Stack.Screen>
         <Stack.Screen name="PasswordReset" component={PasswordReset} />
         <Stack.Screen name="Journals" component={Journal} />
+        <Stack.Screen name="Analysis" component={Analysis} />
       </Stack.Navigator>
     </NavigationContainer>
   );
