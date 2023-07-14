@@ -1,13 +1,7 @@
 # ZenZone: An Application for Tracking Mental Wellness using the Differential Emotional Scale
 
 ## <u>Introduction</u>
-This project aims to develop an interactive mental wellness platform using the Object-Oriented Analysis and Design (OOAD) paradigm. It addresses the limitations of existing mental wellness applications by incorporating tested assessment tools like the Diagnostic Evaluation of Symptoms (DES) and the Self-Assessment Manikin (SAM). 
-
-The platform provides a safe space for users to express themselves through journals while tracking factors influencing their mental wellness. Using the DES, it analyzes mental wellness and suggests potential negative mental health conditions based on primary emotions. Users can also record daily mental health observations and set medication reminders. 
-
-Extensive research ensures the platform's effectiveness in improving mental well-being. It targets individuals seeking to enhance mental wellness, track emotions, and access support through a user-friendly interface.
-
-Please refer to the project documentation for more information on how to use the platform.
+This project develops an interactive mental wellness platform using Object-Oriented Analysis and Design. It addresses limitations of existing apps by incorporating assessment tools like DES and SAM. Users can express themselves through journals, track factors influencing mental wellness, and receive suggestions based on primary emotions. Extensive research ensures the platform's effectiveness in improving mental well-being. It targets individuals seeking to enhance mental wellness, track emotions, and access support through a user-friendly interface. 
 
 ## <u>Technologies</u>
 The project is created with:
