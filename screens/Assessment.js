@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import Modal from 'react-native-modal';
 
 export default function Assessment() {
 
@@ -37,6 +38,8 @@ export default function Assessment() {
   const titlePosition = useRef(new Animated.Value(1000)).current; 
   const beginAssessmentPosition = useRef(new Animated.Value(1000)).current; 
   const questionsPosition = useRef(new Animated.Value(1000)).current; 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const handleSubmit = async () => {
   
@@ -55,9 +58,11 @@ export default function Assessment() {
     data['email'] = email;
     
     try {
-      const response = await axios.post('https://9915-2c0f-fe38-232b-a5ee-a9cc-4d46-457b-6639.ngrok-free.app/api/analysis', data);
+      const response = await axios.post('https://09da-2c0f-fe38-2100-2861-8942-8f58-eda6-8f6a.ngrok-free.app/api/analysis', data);
 
       console.log(response.data);
+      setModalMessage(`You are currently experiencing a ${response.data} mental state. Visit the analysis page on your profile to see your mental state trends.`);
+      setModalVisible(true);
       Alert.alert('Success', 'Your answers have been submitted successfully.');
     } catch (error) {
       Alert.alert('Error', 'Something went wrong while submitting your answers.');
@@ -198,6 +203,29 @@ export default function Assessment() {
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>{modalMessage}</Text>
+
+            <TouchableOpacity
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={styles.textStyle}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
     </ScrollView>
   );
   
@@ -309,4 +337,45 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     color:'white',
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+    width: "80%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight:85,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize:16
+  }
 });

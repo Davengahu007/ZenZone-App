@@ -21,6 +21,7 @@ export default function Form(props) {
   const screen = route.name;
   const primaryButtonText = screen === 'Register' ? 'Register' : 'Login';
 
+  const [name, setName] = useState(''); 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -30,15 +31,15 @@ export default function Form(props) {
   };
 
   const handleRegisterSubmit = () => {
-    props.onSubmit(email, password);
+    props.onSubmit(name, email, password); 
     console.log('Register form submitted');
   };
 
   const handlePrimaryButtonPress = () => {
     if (screen === 'Register') {
-      handleRegisterSubmit(); // Call register submit function if in Register form
+      handleRegisterSubmit(); 
     } else {
-      handleLoginSubmit(); // Call login submit function if in Login form
+      handleLoginSubmit(); 
     }
   };
 
@@ -48,58 +49,72 @@ export default function Form(props) {
 
   return (
     <View style={{ backgroundColor: '#7FB3D5' }}>
-    <View>
-      <FormInputGroup>
-        <FormLabel text="Email" />
-        <FormInput onChangeText={(text) => setEmail(text)} value={email} />
-        {!!props.errorEmail && (
+      <View>
+        
+        {screen === 'Register' && (
+          <FormInputGroup>
+            <FormLabel text="Name" />
+            <FormInput onChangeText={(text) => setName(text)} value={name} />
+            
+            {!!props.errorName && (
+              <Text style={tw`p-1 my-2 text-red-700 rounded-lg`}>
+                {props.errorName}
+              </Text>
+            )}
+          </FormInputGroup>
+        )}
+
+        <FormInputGroup>
+          <FormLabel text="Email" />
+          <FormInput onChangeText={(text) => setEmail(text)} value={email} />
+          {!!props.errorEmail && (
+            <Text style={tw`p-1 my-2 text-red-700 rounded-lg`}>
+              {props.errorEmail}
+            </Text>
+          )}
+        </FormInputGroup>
+
+        <FormInputGroup>
+          <FormLabel text="Password" />
+          <FormInput
+            onChangeText={(text) => setPassword(text)}
+            value={password}
+            secureTextEntry={true}
+          />
+        </FormInputGroup>
+
+        {!!props.error && (
           <Text style={tw`p-1 my-2 text-red-700 rounded-lg`}>
-            {props.errorEmail}
+            {props.error}
           </Text>
         )}
-      </FormInputGroup>
 
-      <FormInputGroup>
-        <FormLabel text="Password" />
-        <FormInput
-          onChangeText={(text) => setPassword(text)}
-          value={password}
-          secureTextEntry={true}
+        {screen === 'Login' && !!props.errorPassword && (
+          <Text style={tw`p-1 my-2 text-red-700 rounded-lg`}>
+            {props.errorPassword}
+          </Text>
+        )}
+
+        <FormButton
+          primary={true}
+          onPress={handlePrimaryButtonPress}
+          text={primaryButtonText}
         />
-      </FormInputGroup>
 
-      {!!props.error && (
-        <Text style={tw`p-1 my-2 text-red-700 rounded-lg`}>
-          {props.error}
-        </Text>
-      )}
+        <FormButton
+          primary={false}
+          onPress={handleSecondaryButtonPress}
+          text={screen === 'Register' ? 'Login' : 'Register'}
+        />
 
-      {screen === 'Login' && !!props.errorPassword && (
-        <Text style={tw`p-1 my-2 text-red-700 rounded-lg`}>
-          {props.errorPassword}
-        </Text>
-      )}
-
-      <FormButton
-        primary={true}
-        onPress={handlePrimaryButtonPress}
-        text={primaryButtonText}
-      />
-
-      <FormButton
-        primary={false}
-        onPress={handleSecondaryButtonPress}
-        text={screen === 'Register' ? 'Login' : 'Register'}
-      />
-
-      <FormButton
-      noBorder={true}
-        text="Forgot Password?"
-        onPress={() => {
-          navigation.navigate('PasswordReset');
-        }}
-      />
-    </View>
+        <FormButton
+          noBorder={true}
+          text="Forgot Password?"
+          onPress={() => {
+            navigation.navigate('PasswordReset');
+          }}
+        />
+      </View>
     </View>
   );
 }

@@ -51,7 +51,7 @@ export default function ProfileScreen() {
     async function fetchJournalEntries() {
       try {
         const email = await AsyncStorage.getItem('userEmail');
-        const response = await axios.get(`https://9915-2c0f-fe38-232b-a5ee-a9cc-4d46-457b-6639.ngrok-free.app/api/getJournalEntries/${email}`);
+        const response = await axios.get(`https://09da-2c0f-fe38-2100-2861-8942-8f58-eda6-8f6a.ngrok-free.app/api/getJournalEntries/${email}`);
         setJournalEntries(response.data);
       } catch (error) {
         console.log(error);

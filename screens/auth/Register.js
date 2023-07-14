@@ -18,18 +18,19 @@ export default function Register() {
   const [showPopup, setShowPopup] = useState(false);
   const navigation = useNavigation();
 
-  const register = (email, password) => {
+  const register = (name, email, password) => {
     const credentials = {
+      name:name,
       email: email,
       password: password,
       devicename: Device.modelName,
     };
 
-    if (!email || !password) {
+    if (!email || !password || !name) {
       alert('Fill in all the required fields');
     } else {
       axios
-        .post(`${'https://9915-2c0f-fe38-232b-a5ee-a9cc-4d46-457b-6639.ngrok-free.app'}/api/register`, credentials)
+        .post(`${'https://09da-2c0f-fe38-2100-2861-8942-8f58-eda6-8f6a.ngrok-free.app'}/api/register`, credentials)
         .then((response) => {
           if (response.data.status) {
             setError({ errorEmail: '', errorPassword: '' });
