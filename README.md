@@ -12,7 +12,7 @@ Please refer to the project documentation for more information on how to use the
  
 
 ## <u>Aims and Objectives</u>
-The ZenZne project aims to achieve the following objectives:
+The ZenZone project aims to achieve the following objectives:
 
    1. Develop an interactive mental wellness platform that empowers individuals to track and improve their mental well-being.
    2. Incorporate established assessment tools like the Diagnostic Evaluation of Symptoms (DES) and the Self-Assessment Manikin (SAM) to provide accurate analysis of mental wellness factors.
