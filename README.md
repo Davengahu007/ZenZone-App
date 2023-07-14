@@ -36,6 +36,10 @@ The project is created with:
    * ngrok
    * XAMPP
    * Visual Studio Code
+- Running the development server
+```bash
+$ npm start
+```
 
 ## <u> Dependecies</u>
 The following dependencies were used:
