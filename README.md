@@ -130,10 +130,23 @@ $ composer require illuminate/validation
 To set up the project locally, follow these steps:
 
    1. Clone the repository to your local machine.  
-   2. Install the required dependecies by running ```$npm install``` in the project directory.
+   2. Install the required dependecies by running ```npm install``` in the project directory.
+   ```bash
+    $npm install
+   ```
    3. Configure the database connection in the `.env` file.
-   4. Run the database migrations with the command ```$php artisan migrate```.
+   4. Run the database migrations with the command ```php artisan migrate```.
+   ```bash
+   $php artisan migrate
+   ```
    5. Start the development server using ```npm start``` or ```expo start```.
+   ```bash
+   $ npm start
+   ```
+   ```bash
+   $ expo start
+   ```
+      
 
 
 
