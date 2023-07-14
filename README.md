@@ -9,22 +9,6 @@ Extensive research ensures the platform's effectiveness in improving mental well
 
 Please refer to the project documentation for more information on how to use the platform.
 
- 
-
-## <u>Aims and Objectives</u>
-The ZenZone project aims to achieve the following objectives:
-
-   1. Develop an interactive mental wellness platform that empowers individuals to track and improve their mental well-being.
-   2. Incorporate established assessment tools like the Diagnostic Evaluation of Symptoms (DES) and the Self-Assessment Manikin (SAM) to provide accurate analysis of mental wellness factors.
-   3. Create a safe and supportive space for users to express themselves through digital journals, enabling them to reflect on their thoughts, emotions, and experiences.
-   4. Enable users to track and analyze the factors that influence their mental wellness, facilitating a deeper understanding of their emotional well-being.
-   5. Provide data visualization features to present mental wellness insights in a clear and intuitive manner, helping users identify trends and patterns.
-   6. Conduct extensive research to ensure the effectiveness and reliability of the platform in promoting mental well-being.
-   7. Design a user-friendly and interactive interface that fosters engagement and encourages regular usage of the application.
-   8. Target individuals seeking to enhance their mental wellness, track their emotions, and access support in a convenient and accessible manner.
-   9. Continuously improve and enhance the ZenZone platform based on user feedback and emerging advancements in mental wellness research.
-   
-
 ## <u>Technologies</u>
 The project is created with:
    
@@ -61,20 +45,62 @@ The project is created with:
 
 ## <u> Dependecies</u>
 The following dependencies were used:
-  * React Native Dependencies:  
-   1. React Native
-   2. Axios
-   3. React Navigation
-   4. Redux
-   5. Redux-Thunk
-   6. @react-native-async-storage/async-storage
-   7. @react-native-community/masked-view
-   8. @react-navigation/native
-   9. @react-navigation/stack
-   10. react-native-gesture-handler
-   11. react-native-reanimated
-   12. react-native-safe-area-context
-   13. react-native-screens
+ ## React Native Dependencies
+
+- React Native
+```bash
+$ npm install react-native
+```
+- Axios
+```bash
+  $ npm install axios
+```  
+- React Navigation
+```bash
+  $ npm install @react-navigation/native
+  $ npm install @react-navigation/stack
+ ```
+- Redux
+```bash
+  $ npm install redux
+```
+- Redux-Thunk
+```bash
+  $ npm install redux-thunk
+```
+- @react-native-async-storage/async-storage
+```bash
+  $ npm install @react-native-async-storage/async-storage
+```
+- @react-native-community/masked-view
+```bash
+  $ npm install @react-native-community/masked-view
+ ```
+- @react-navigation/native
+``` bash
+$ npm install @react-navigation/native
+```
+- @react-navigation/stack
+```bash
+$ npm install @react-navigation/stack
+```
+- react-native-gesture-handler
+```bash
+$ npm install react-native-gesture-handler
+```
+- react-native-reanimated
+```bash
+$ npm install react-native-reanimated
+```
+- react-native-safe-area-context
+```bash
+$ npm install react-native-safe-area-context
+```
+- react-native-screens
+```bash
+$ npm install react-native-screens
+```
+
 
    * Laravel Dependencies:
   
