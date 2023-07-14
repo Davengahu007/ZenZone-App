@@ -1,15 +1,5 @@
 # ZenZone: An Application for Tracking Mental Wellness using the Differential Emotional Scale
 
-## Table of Contents
-- [ZenZone: An Application for Tracking Mental Wellness using the Differential Emotional Scale](#zenzone-an-application-for-tracking-mental-wellness-using-the-differential-emotional-scale)
-  - [Table of Contents](#table-of-contents)
-  - [Introduction](#introduction)
-  - [Aims and Objectives](#aims-and-objectives)
-  - [Technologies](#technologies)
-  - [Setup](#setup)
-  - [Features](#features)
-  - [Privacy and Security](#privacy-and-security)
-  - [Compliance with Data Protection Regulations](#compliance-with-data-protection-regulations)
 ## <u>Introduction</u>
 This project aims to develop an interactive mental wellness platform using the Object-Oriented Analysis and Design (OOAD) paradigm. It addresses the limitations of existing mental wellness applications by incorporating tested assessment tools like the Diagnostic Evaluation of Symptoms (DES) and the Self-Assessment Manikin (SAM). 
 
@@ -69,6 +59,36 @@ The project is created with:
    * XAMPP
    * Visual Studio Code
 
+## <u> Dependecies</u>
+The following dependencies were used:
+  * React Native Dependencies:  
+   1. React Native
+   2. Axios
+   3. React Navigation
+   4. Redux
+   5. Redux-Thunk
+   6. @react-native-async-storage/async-storage
+   7. @react-native-community/masked-view
+   8. @react-navigation/native
+   9. @react-navigation/stack
+   10. react-native-gesture-handler
+   11. react-native-reanimated
+   12. react-native-safe-area-context
+   13. react-native-screens
+
+   * Laravel Dependencies:
+  
+   1. illuminate/support: Laravel's support package providing utility classes and functions.
+      *  Install: Run composer require illuminate/support.
+    2. illuminate/validation: Laravel's validation package, responsible for validating incoming requests.
+      * Install: Run composer require illuminate/validation.
+    3. illuminate/support/facades/Validator: Laravel's facade for its validation system. 
+    4. illuminate/support/facades/Hash: Laravel's facade for its hashing system.
+    5. illuminate/support/facades/Log: Laravel's facade for its logging system.
+    6. illuminate/database/eloquent/Model: Base class for Laravel's Eloquent ORM models.
+    7. illuminate/validation/rules/Password: Laravel's rule object for validating password fields.
+
+
  ## <u>Setup</u>
 To set up the project locally, follow these steps:
 
@@ -116,4 +136,5 @@ We are committed to complying with applicable data protection regulations, such 
 6. Data Retention: We retain user data only for as long as necessary to fulfill the purposes for which it was collected, unless otherwise required by law. We have defined data retention periods and regularly review and update them.
 
 By adhering to these data protection regulations, we strive to maintain the privacy and security of user data and ensure a trustworthy and responsible platform for our users.
+
 
