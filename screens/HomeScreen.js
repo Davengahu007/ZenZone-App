@@ -8,7 +8,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import logo from '../assets/ZenZoneLogo.png';
 import { useFocusEffect } from '@react-navigation/native';
 
-
 export default function HomeScreen() {
   const navigation = useNavigation();
   const today = new Date();
@@ -19,6 +18,12 @@ export default function HomeScreen() {
   const quotePosition = useRef(new Animated.Value(-1000)).current; 
   const activityPosition = useRef(new Animated.Value(1000)).current; 
   const blockPosition = useRef(new Animated.Value(-1000)).current;
+
+  const emojiAnimValue1 = useRef(new Animated.Value(0)).current;
+  const emojiAnimValue2 = useRef(new Animated.Value(0)).current;
+  const emojiAnimValue3 = useRef(new Animated.Value(0)).current;
+  const emojiAnimValue4 = useRef(new Animated.Value(0)).current;
+  const emojiAnimValue5 = useRef(new Animated.Value(0)).current;
 
   useFocusEffect(
     React.useCallback(() => {
@@ -46,9 +51,95 @@ export default function HomeScreen() {
         friction: 25.8, 
         useNativeDriver: true,
       }).start();
+
+      startFloatingAnimation();
     }, [])
   );
-  
+
+  const startFloatingAnimation = () => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(emojiAnimValue1, {
+          toValue: 1,
+          duration: 1500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(emojiAnimValue1, {
+          toValue: 0,
+          duration: 1500,
+          useNativeDriver: true,
+        }),
+      ]),
+    ).start();
+
+    setTimeout(() => {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(emojiAnimValue2, {
+            toValue: 1,
+            duration: 1500,
+            useNativeDriver: true,
+          }),
+          Animated.timing(emojiAnimValue2, {
+            toValue: 0,
+            duration: 1500,
+            useNativeDriver: true,
+          }),
+        ]),
+      ).start();
+    }, 300);
+
+    setTimeout(() => {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(emojiAnimValue3, {
+            toValue: 1,
+            duration: 2000,
+            useNativeDriver: true,
+          }),
+          Animated.timing(emojiAnimValue3, {
+            toValue: 0,
+            duration: 2000,
+            useNativeDriver: true,
+          }),
+        ]),
+      ).start();
+    }, 800);
+
+    setTimeout(() => {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(emojiAnimValue4, {
+            toValue: 1,
+            duration: 2000,
+            useNativeDriver: true,
+          }),
+          Animated.timing(emojiAnimValue4, {
+            toValue: 0,
+            duration: 2000,
+            useNativeDriver: true,
+          }),
+        ]),
+      ).start();
+    }, 1200);
+
+    setTimeout(() => {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(emojiAnimValue5, {
+            toValue: 1,
+            duration: 2000,
+            useNativeDriver: true,
+          }),
+          Animated.timing(emojiAnimValue5, {
+            toValue: 0,
+            duration: 2000,
+            useNativeDriver: true,
+          }),
+        ]),
+      ).start();
+    }, 1600);
+  };
 
   const styles = StyleSheet.create({
   container: {
@@ -220,33 +311,31 @@ export default function HomeScreen() {
       
       <Animated.View style={[styles.blockContainer, { transform: [{ translateY: blockPosition }] }]}>
         <Text style={styles.text}>Today I'm Feeling...</Text>
-        <View style={{ marginTop:20,flexDirection: 'row', justifyContent: 'space-around' }}>
-          <TouchableOpacity onPress={() => navigation.navigate('Journals', { mood: 'Happy' })}>
-            <Text style={{fontSize: 40}}><Text>😀</Text></Text>
-            <Text style={{color:'white',fontSize: 12, textAlign: 'center'}}>Happy</Text>
-          </TouchableOpacity>
+        <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'space-around' }}>
+        <TouchableOpacity onPress={() => navigation.navigate('Journals', { mood: 'Happy' })}>
+          <Animated.Text style={{fontSize: 40, transform: [{ translateY: emojiAnimValue1.interpolate({ inputRange: [0, 1], outputRange: [0, -10] }) }] }}>😀</Animated.Text>
+          <Text style={{color:'white',fontSize: 12, textAlign: 'center'}}>Happy</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('Journals', { mood: 'Sad' })}>
-          <Text style={{fontSize: 40}}>😞
-</Text>
+          <Animated.Text style={{fontSize: 40, transform: [{ translateY: emojiAnimValue2.interpolate({ inputRange: [0, 1], outputRange: [0, -10] }) }] }}>😞</Animated.Text>
           <Text style={{color:'white',fontSize: 12, textAlign: 'center'}}>Sad</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('Journals', { mood: 'Meh' })}>
-          <Text style={{fontSize: 40}}>😐</Text>
+          <Animated.Text style={{fontSize: 40, transform: [{ translateY: emojiAnimValue3.interpolate({ inputRange: [0, 1], outputRange: [0, -10] }) }] }}>😐</Animated.Text>
           <Text style={{color:'white',fontSize: 12, textAlign: 'center'}}>Meh</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('Journals', { mood: 'Stressed' })}>
-          <Text style={{fontSize: 40}}>😰</Text>
+          <Animated.Text style={{fontSize: 40, transform: [{ translateY: emojiAnimValue4.interpolate({ inputRange: [0, 1], outputRange: [0, -10] }) }] }}>😣</Animated.Text>
           <Text style={{color:'white',fontSize: 12, textAlign: 'center'}}>Stressed</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('Journals', { mood: 'Angry' })}>
-          <Text style={{fontSize: 40}}>😡</Text>
+          <Animated.Text style={{fontSize: 40, transform: [{ translateY: emojiAnimValue5.interpolate({ inputRange: [0, 1], outputRange: [0, -10] }) }] }}>😡</Animated.Text>
           <Text style={{color:'white',fontSize: 12, textAlign: 'center'}}>Angry</Text>
         </TouchableOpacity>
-        
       </View>
       
       </Animated.View>

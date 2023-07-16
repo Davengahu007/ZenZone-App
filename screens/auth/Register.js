@@ -30,7 +30,7 @@ export default function Register() {
       alert('Fill in all the required fields');
     } else {
       axios
-        .post(`${'https://09da-2c0f-fe38-2100-2861-8942-8f58-eda6-8f6a.ngrok-free.app'}/api/register`, credentials)
+        .post(`${'https://ad1f-105-163-158-200.ngrok-free.app'}/api/register`, credentials)
         .then((response) => {
           if (response.data.status) {
             setError({ errorEmail: '', errorPassword: '' });

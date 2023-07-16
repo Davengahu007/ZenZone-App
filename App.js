@@ -10,6 +10,7 @@ import Journal from './screens/Journals';
 import HomeScreen from './screens/HomeScreen';
 import Analysis from './screens/analysis';  
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ChatBotScreen from './screens/ChatBotScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,7 +37,7 @@ export default function App() {
   useEffect(() => {
     const intervalId = setInterval(() => {
       loadToken();
-    }, 1000); // check every second
+    }, 1000); 
     return () => {
       clearInterval(intervalId);
     };
@@ -57,6 +58,7 @@ export default function App() {
         <Stack.Screen name="PasswordReset" component={PasswordReset} />
         <Stack.Screen name="Journals" component={Journal} />
         <Stack.Screen name="Analysis" component={Analysis} />
+        <Stack.Screen name="ChatBotScreen" component={ChatBotScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

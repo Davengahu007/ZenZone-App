@@ -51,7 +51,7 @@ export default function ProfileScreen() {
     async function fetchJournalEntries() {
       try {
         const email = await AsyncStorage.getItem('userEmail');
-        const response = await axios.get(`https://09da-2c0f-fe38-2100-2861-8942-8f58-eda6-8f6a.ngrok-free.app/api/getJournalEntries/${email}`);
+        const response = await axios.get(`https://ad1f-105-163-158-200.ngrok-free.app/api/getJournalEntries/${email}`);
         setJournalEntries(response.data);
       } catch (error) {
         console.log(error);
@@ -97,9 +97,16 @@ export default function ProfileScreen() {
   <Text style={styles.logoutButtonText}>View Mental Health Analysis</Text>
 </TouchableOpacity>
 
+<TouchableOpacity style={styles.logoutButton} onPress={() => navigation.navigate('ChatBotScreen')}>
+  <Text style={styles.logoutButtonText}>Quick Chat?</Text>
+</TouchableOpacity>
+
+       
+
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Text style={styles.logoutButtonText}>Logout</Text>
         </TouchableOpacity>
+        
       </Animated.View>
     </View>
   );

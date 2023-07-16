@@ -58,7 +58,7 @@ export default function Assessment() {
     data['email'] = email;
     
     try {
-      const response = await axios.post('https://09da-2c0f-fe38-2100-2861-8942-8f58-eda6-8f6a.ngrok-free.app/api/analysis', data);
+      const response = await axios.post('https://ad1f-105-163-158-200.ngrok-free.app/api/analysis', data);
 
       console.log(response.data);
       setModalMessage(`You are currently experiencing a ${response.data} mental state. Visit the analysis page on your profile to see your mental state trends.`);

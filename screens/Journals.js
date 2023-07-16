@@ -10,7 +10,7 @@ const AnimatedView = Animated.createAnimatedComponent(View);
 
 export default function Journals({route, navigation}) {
   const initialMood = route.params?.mood || ''; 
-  const [mood, setMood] = useState(initialMood);
+  const [mood, setMood] = useState(initialMood); 
   const [text, setText] = useState('');
 
   const titlePosition = useRef(new Animated.Value(300)).current;
@@ -65,6 +65,7 @@ export default function Journals({route, navigation}) {
 
   useFocusEffect(
     React.useCallback(() => {
+      setMood(route.params?.mood || '');
       Animated.spring(titlePosition, {
         toValue: 0, 
         friction: 25.8, 
@@ -79,7 +80,7 @@ export default function Journals({route, navigation}) {
         delay: 200,
         useNativeDriver: true
       }).start();
-    }, [])
+    }, [route.params?.mood])
   );
 
   return (

@@ -4,8 +4,6 @@ import { LineChart } from 'react-native-chart-kit';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-
 const chartConfig = {
   backgroundGradientFrom: '#3182CE',
   backgroundGradientTo: '#3182CE',
@@ -20,7 +18,7 @@ export default function Analysis() {
     const fetchData = async () => {
     const email = await AsyncStorage.getItem('userEmail');
       try {
-        const response = await axios.get(`https://09da-2c0f-fe38-2100-2861-8942-8f58-eda6-8f6a.ngrok-free.app/api/getAssessmentResults/${email}`);
+        const response = await axios.get(`https://ad1f-105-163-158-200.ngrok-free.app/api/getAssessmentResults/${email}`);
         setData(response.data);
       } catch (err) {
         console.error(err);
