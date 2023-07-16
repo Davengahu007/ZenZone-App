@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20, // For consistent side padding
     paddingTop: 50, // To push everything down from the top
+    
   },
   emailBlock: {
     backgroundColor: '#3182CE',
