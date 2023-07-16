@@ -1,12 +1,51 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, Animated, KeyboardAvoidingView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, Animated, KeyboardAvoidingView, Platform } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { ActivityIndicator } from 'react-native';
+import axios from 'axios';
+
+const OPENAI_API_KEY = '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';
 
 export default function ChatBotScreen() {
   const scrollViewRef = useRef();
   const [messages, setMessages] = useState([{ text: 'Welcome to ZenChat! Feel free to talk about how your day is going.', fromUser: false }]);
   const [input, setInput] = useState('');
   const titlePosition = useRef(new Animated.Value(-300)).current;
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const getGpt3Response = async (message) => {
+    setIsLoading(true);
+    try {
+      const response = await axios.post(
+        'https://api.openai.com/v1/chat/completions',
+        {
+          model: "gpt-3.5-turbo",
+          messages: [
+            {
+              role: "user",
+              content: message,
+            },
+          ],
+          max_tokens: 60,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${OPENAI_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+  
+      const gpt3Response = response.data.choices[0].message.content.trim();
+      setIsLoading(false);
+      return gpt3Response;
+    } catch (error) {
+      setIsLoading(false);
+      console.error('Error getting response from OpenAI: ', error);
+      return 'Error getting response from OpenAI: ' + JSON.stringify(error);
+    }
+  };
+  
 
   useEffect(() => {
     setTimeout(() => handleSend(''), 1000);
@@ -18,97 +57,16 @@ export default function ChatBotScreen() {
     }).start();
   }, []);
 
-  const handleSend = () => {
-    if (input) {
-      // User message
-      setMessages(prevMessages => [...prevMessages, { text: input, fromUser: true }]);
-      // Bot response
-      setMessages(prevMessages => [...prevMessages, { text: getBotResponse(input), fromUser: false }]);
-      setInput('');
+  const handleSend = async () => {
+    if (input.trim() === '') {
+      return;
     }
-    scrollViewRef.current.scrollToEnd({ animated: true });
-  };
-
-  // Here's where you define your bot logic
-  const getBotResponse = (message) => {
-    message = message.toLowerCase();
   
-    // Greetings
-    if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
-      return 'Hello! How can I help you today?';
-    }
-    
-    if (message.includes('good morning')) {
-      return 'Good morning! How can I assist you today?';
-    }
-    
-    if (message.includes('good afternoon')) {
-      return 'Good afternoon! What can I do for you today?';
-    }
-    
-    if (message.includes('good evening')) {
-      return 'Good evening! How can I help you this evening?';
-    }
-    
-    // Goodbyes
-    if (message.includes('goodbye') || message.includes('bye')) {
-      return 'Goodbye! Have a great day!';
-    }
-    
-    if (message.includes('see you later')) {
-      return 'See you later! Take care!';
-    }
-    
-    if (message.includes('good night')) {
-      return 'Good night! Sleep well!';
-    }
-    
-    // Checking up on the bot
-    if (message.includes('how are you')) {
-      return 'I\'m an AI, so I don\'t have feelings, but I\'m here to help you. How can I assist you today?';
-    }
-    
-    // Feelings and emotions
-    if (message.includes('happy')) {
-      return 'That\'s great! Happiness is the key to a good life. Can you share what made you happy today?';
-    }
-    
-    if (message.includes('sad')) {
-      return 'I\'m sorry to hear that. Would you like to talk about it? I\'m here to listen.';
-    }
-    
-    if (message.includes('angry')) {
-      return 'I\'m sorry to hear that you\'re feeling angry. It\'s okay to feel this way, would you like to talk more about what happened?';
-    }
-    
-    if (message.includes('tired')) {
-      return 'You must have had a long day. Remember to rest well. Would you like to talk about why you\'re feeling tired?';
-    }
-    
-    if (message.includes('excited')) {
-      return 'How exciting! Would you like to share more about what you\'re looking forward to?';
-    }
-    
-    if (message.includes('nervous')) {
-      return 'It sounds like you have a lot on your mind. Would you like to talk about what is making you feel nervous?';
-    }
-    
-    if (message.includes('scared')) {
-      return 'I\'m here with you. You\'re not alone. Would you like to talk about what is scaring you?';
-    }
-    
-    if (message.includes('frustrated')) {
-      return 'It\'s tough when things don\'t go as planned. Would you like to talk more about what\'s frustrating you?';
-    }
-    
-    if (message.includes('lonely')) {
-      return 'I\'m really sorry that you\'re feeling this way, but I\'m unable to provide the help that you need. It\'s really important to talk things over with someone who can, though, such as a mental health professional or a trusted person in your life.';
-    }
-    
-    // Default
-    return 'I\'m here to listen. Tell me more.';
+    setMessages([...messages, {text: input, fromUser: true}]);
+    const botMessage = await getGpt3Response(input);
+    setMessages(previousMessages => [...previousMessages, { text: botMessage, fromUser: false }]);
+    setInput('');
   };
-  
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
@@ -137,9 +95,13 @@ export default function ChatBotScreen() {
           <Ionicons name="send-outline" size={24} color="white" />
         </TouchableOpacity>
       </View>
+      {isLoading && <ActivityIndicator size="large" color="#00ff00" />}
     </KeyboardAvoidingView>
   );
 }
+
+// Your styles object remains the same
+
 
 const styles = StyleSheet.create({
   container: {
@@ -164,11 +126,13 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flex: 1,
-    borderRadius: 20,
-    marginBottom: 20,
+    borderRadius: 10,
+    marginBottom: 15,
     marginTop: 20,
     backgroundColor: '#F2F3F4',
-    paddingTop: 20,  
+    paddingTop: 40, 
+    paddingBottom:10,
+
   },
   inputContainer: {
     flexDirection: 'row',
